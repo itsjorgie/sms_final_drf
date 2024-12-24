@@ -1,116 +1,190 @@
-/* General Reset */
-body, h1, h2, p, form, input, button {
+body {
+    background-color: #ECEBDE;
+    font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
-/* Body Styling */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
-    line-height: 1.6;
-}
-
-/* Header Section */
 header {
-    background-color: #4CAF50;
+    background-color: #3B1E54;
     color: white;
-    padding: 1rem 2rem;
-    text-align: center;
-    border-bottom: 4px solid #45a049;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
-header h1 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
+header img {
+    height: 50px;
+    width: auto;
 }
-
-header nav {
-    margin-top: 0.5rem;
+nav {
+    display: flex;
 }
-
-header nav button {
-    background: white;
-    color: #4CAF50;
-    border: 2px solid #4CAF50;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    cursor: pointer;
-    border-radius: 5px;
-    margin: 0 0.5rem;
-    transition: all 0.3s ease;
-}
-
-header nav button:hover {
-    background: #45a049;
+nav a {
     color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+nav a:hover {
+    background-color: #8dc996;
 }
 
-/* Main Content */
 main {
-    padding: 2rem;
+    padding: 40px 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 140px);
+    min-height: 80vh;
 }
 
-main div {
-    background: white;
-    padding: 2rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+/* Form Container */
+.form-container {
+    background-color: rgb(221, 234, 215);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 400px;
+    margin-bottom: 40px;
+    position: relative;
+    border: 2px solid #3B1E54; /* Adjust color and thickness */
+}
+
+.form-container h2 {
     text-align: center;
+    color: #3B1E54;
+    margin-bottom: 20px;
 }
 
-main h2 {
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-    color: #333;
-}
-
-main label {
+form label {
     display: block;
-    margin-bottom: 0.5rem;
+    margin-bottom: 8px;
+    font-size: 14px;
     font-weight: bold;
 }
 
-main input {
-    width: calc(100% - 20px);
-    padding: 0.5rem;
-    margin-bottom: 1rem;
+/* Input Fields with Icons */
+form .input-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+form input {
+    width: 100%;
+    padding: 8px 12px;
+    margin-bottom: 0;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
+    border-radius: 2px;
+    width: 325px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+    outline: 2px solid #508f66; /* Add a solid blue outline */
 }
 
-main button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
+form input:focus {
+    border-color: #0fb341;
+    outline: none;
+}
+
+/* Left side icon */
+form .input-wrapper i:first-child {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #82cd80;
+}
+
+/* Right side show/hide password icon */
+form .input-wrapper .fas.fa-eye,
+form .input-wrapper .fas.fa-eye-slash {
+    position: absolute;
+    top: 50%;
+    right: 10px; /* Position icon on the right side */
+    transform: translateY(-50%);
     cursor: pointer;
-    border-radius: 5px;
-    transition: all 0.3s ease;
 }
 
-main button:hover {
-    background-color: #45a049;
+/* Space for the left icon */
+form .input-wrapper input {
+    padding-left: 35px; /* Space for the left icon */
+    padding-right: 35px; /* Space for the right icon */
 }
 
-/* Footer Section */
+/* Buttons */
+form button {
+    background-color: #3B1E54;
+    color: white;
+    padding: 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 16px;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+form button:hover {
+    background-color: #8dc996;
+}
+
+/* Footer */
 footer {
-    background: #333;
+    background-color: #3B1E54;
     color: white;
     text-align: center;
-    padding: 1rem;
-    position: relative;
+    padding: 2px 0;
+    position: fixed;
     bottom: 0;
     width: 100%;
+}
+
+p {
+    text-align: center;
+    font-size: 14px;
+}
+
+p a {
+    color: #3B1E54;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+p a:hover {
+    color: #8dc996;
+}
+
+/* Show/Hide form sections */
+#loginForm, #registerForm {
+    display: none;
+}
+#registerForm.active, #loginForm.active {
+    display: block;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 600px) {
+    .form-container {
+        max-width: 90%;
+        padding: 20px;
+    }
+
+    header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    nav {
+        margin-top: 10px;
+    }
+
+    nav a {
+        margin-left: 10px;
+    }
 }

@@ -1,5 +1,5 @@
-// Show the selected section
-function showSection(sectionId) {
+   // Show the selected section
+   function showSection(sectionId) {
     const sections = ['registerForm', 'loginForm'];
     sections.forEach(function(section) {
         document.getElementById(section).style.display = 'none';
@@ -11,8 +11,7 @@ function showSection(sectionId) {
 function getCsrfToken() {
     const cookieValue = document.cookie
         .split('; ')
-        .find(row => row.startsWith('csrftoken='))
-        ?.split('=')[1];
+        .find(row => row.startsWith('csrftoken='))?.split('=')[1];
     return cookieValue || '';
 }
 
@@ -21,6 +20,7 @@ function handleRegisterSubmit(event, system) {
     event.preventDefault();
     const formData = new FormData(document.getElementById('registerFormElement'));
     const data = {
+        email: formData.get('email'),
         username: formData.get('username'),
         password: formData.get('password'),
         confirm_password: formData.get('confirm_password')
@@ -48,7 +48,7 @@ function handleRegisterSubmit(event, system) {
         if (data.message) {
             alert(data.message);
             showSection('loginForm');
-            document.getElementById('registerFormElement').reset();  // Reset form after successful registration
+            document.getElementById('registerFormElement').reset();
         } else {
             alert(data.error || 'Registration failed.');
         }
@@ -59,12 +59,12 @@ function handleRegisterSubmit(event, system) {
     });
 }
 
-// Handle form submission for login
+// Handle form submission for login with username instead of email
 function handleLoginSubmit(event, system) {
     event.preventDefault();
     const formData = new FormData(document.getElementById('loginFormElement'));
     const data = {
-        username: formData.get('username'),
+        username: formData.get('username'),  // Using username instead of email
         password: formData.get('password')
     };
 
@@ -91,9 +91,24 @@ function handleLoginSubmit(event, system) {
     })
     .then(data => {
         localStorage.setItem('access_token', data.access);
-        window.location.href = '/dashboard/userhome/';  // Redirect to user home page after login
+        window.location.href = '/dashboard/userhome/';
     })
     .catch(error => {
         alert(error.message);
     });
+}
+
+// Toggle password visibility
+function togglePasswordVisibility(inputId, toggleId) {
+    const input = document.getElementById(inputId);
+    const toggle = document.getElementById(toggleId);
+    if (input.type === 'password') {
+        input.type = 'text';
+        toggle.classList.remove('fa-eye');
+        toggle.classList.add('fa-eye-slash');
+    } else {
+        input.type = 'password';
+        toggle.classList.remove('fa-eye-slash');
+        toggle.classList.add('fa-eye');
+    }
 }
