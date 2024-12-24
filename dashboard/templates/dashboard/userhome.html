@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Home</title>
+    <link rel="stylesheet" href="{% static 'dashboard/css/userhome.css' %}">
+    <script src="{% static 'dashboard/js/userhome.js' %}"></script>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Your Home</h1>
+        <nav>
+            <button onclick="showSection('sendMessageForm')">Send Message</button>
+            <button onclick="showInbox()">Inbox</button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Send Message Form -->
+        <div id="sendMessageForm">
+            <h2>Send Message</h2>
+            <form id="sendMessageFormElement" method="POST" onsubmit="sendMessage(event)">
+                {% csrf_token %}
+                <label for="user_id">User ID:</label>
+                <input type="text" id="user_id" name="user_id" required><br><br>
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" required></textarea><br><br>
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+
+        <!-- Received Messages Section -->
+        <div id="receivedMessagesForm" style="display:none;">
+            <h2>Inbox</h2>
+            <ul id="receivedMessagesList">
+                <!-- Fetched conversation messages will be inserted here -->
+            </ul>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Your Company</p>
+    </footer>
+
+</body>
+</html>

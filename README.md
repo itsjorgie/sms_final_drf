@@ -1,1 +1,1 @@
-# sms_final_drf
+# final_project_smsdjango

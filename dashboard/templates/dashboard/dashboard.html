@@ -1,0 +1,56 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Dashboard{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'dashboard/css/dashboard.css' %}">
+    <script src="{% static 'dashboard/js/dashboard.js' %}"></script>
+</head>
+<body>
+    <header>
+        <h1>Welcome to the Dashboard</h1>
+        <nav>
+            <button onclick="showSection('registerForm')">Register</button>
+            <button onclick="showSection('loginForm')">Login</button>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        <div id="registerForm">
+            <h2>Register</h2>
+            <form id="registerFormElement" method="post" onsubmit="handleRegisterSubmit(event, 'system1')">
+                {% csrf_token %}
+                <label for="username">Username:</label>
+                <input type="text" id="register_username" name="username" required><br><br>
+                <label for="password">Password:</label>
+                <input type="password" id="register_password" name="password" required><br><br>
+                <label for="confirm_password">Confirm Password:</label>
+                <input type="password" id="confirm_password" name="confirm_password" required><br><br>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+
+        <div id="loginForm" style="display:none;">
+            <h2>Login</h2>
+            <form id="loginFormElement" method="post" onsubmit="handleLoginSubmit(event, 'system1')">
+                {% csrf_token %}
+                <label for="username">Username:</label>
+                <input type="text" id="login_username" name="username" required><br><br>
+                <label for="password">Password:</label>
+                <input type="password" id="login_password" name="password" required><br><br>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Your Company</p>
+    </footer>
+
+</body>
+</html>
