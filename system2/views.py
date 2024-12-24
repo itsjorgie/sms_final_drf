@@ -10,7 +10,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .utils import decrypt_message, encrypt_message
-
+import requests
 
 # Sending messages
 class SendMessageView(APIView):
