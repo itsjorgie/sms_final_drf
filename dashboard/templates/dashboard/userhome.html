@@ -10,16 +10,17 @@
 </head>
 <body>
     <header>
-        <h1>Welcome to Your Home</h1>
+        <!-- Replace the h1 with the logo image -->
+        <img src="{% static 'dashboard/images/logo_mp.png' %}" alt="Logo">
         <nav>
             <button onclick="showSection('sendMessageForm')">Send Message</button>
             <button onclick="showInbox()">Inbox</button>
         </nav>
     </header>
-
+    
     <main>
         <!-- Send Message Form -->
-        <div id="sendMessageForm">
+        <div id="sendMessageForm" class="form-container">
             <h2>Send Message</h2>
             <form id="sendMessageFormElement" method="POST" onsubmit="sendMessage(event)">
                 {% csrf_token %}
@@ -41,7 +42,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2024 Your Company</p>
+        <p>&copy; 2024 MessagePro. All rights reserved.</p>
     </footer>
 
 </body>
