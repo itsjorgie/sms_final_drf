@@ -1,0 +1,23 @@
+<!-- send_message.html -->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Message</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="{% static 'dashboard/js/sent_message.js' %}"></script>
+</head>
+<body>
+    <h2>Send Message</h2>
+    <form method="POST" action="{% url 'send_message' %}">
+        {% csrf_token %}
+        <label for="message">Message</label>
+        <textarea name="message" rows="5" required></textarea><br>
+
+        <button type="submit">Send</button>
+    </form>
+</body>
+</html>

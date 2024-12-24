@@ -10,38 +10,38 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .utils import decrypt_message, encrypt_message
-import requests
+import requests, logging
 
 
 # Sending messages
 class SendMessageView(APIView):
+    permission_classes = [IsAuthenticated]  # Ensure the user is authenticated
+
     def post(self, request):
         message = request.data.get("message")
-        user_id = request.data.get("user_id")
         token = request.headers.get("Authorization")
 
         if token and token.startswith("Bearer "):
             token = token.split("Bearer ")[1]
         else:
-            token = request.data.get("token")  # Fallback to token in request body
+            return Response({"error": "Authorization token is required"}, status=status.HTTP_401_UNAUTHORIZED)
 
-        if not message or not user_id or not token:
-            return Response({"error": "Message, user_id, and token are required"}, status=status.HTTP_400_BAD_REQUEST)
+        if not message:
+            return Response({"error": "Message is required"}, status=status.HTTP_400_BAD_REQUEST)
 
-        try:
-            user = User.objects.get(id=user_id)
-        except User.DoesNotExist:
-            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        # Get the authenticated user
+        user = request.user
 
         # Encrypt the message before sending it
         encrypted_message = encrypt_message(message)
 
+        # Save the message to the database
         sent_message = SentMessage.objects.create(user=user, message=encrypted_message)
 
-        system1_url = 'http://127.0.0.1:8002/api/system2/received/'
+        # Update the URL to point to system2
+        system2_url = 'http://127.0.0.1:8002/api/system2/received/'
         payload = {
-            'message': encrypted_message,  # Send the encrypted message
-            'user_id': user_id
+            'message': encrypted_message  # Only send the encrypted message
         }
 
         headers = {
@@ -49,7 +49,7 @@ class SendMessageView(APIView):
         }
 
         try:
-            response = requests.post(system1_url, json=payload, headers=headers)
+            response = requests.post(system2_url, json=payload, headers=headers)
 
             if response.status_code == 201:
                 return Response({
@@ -64,25 +64,25 @@ class SendMessageView(APIView):
         except requests.exceptions.RequestException as e:
             print(f"Error sending message to System 2: {str(e)}")
             return Response({"error": "Failed to send message to System 2"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+        
 # Receiving messages
+# Configure logging
 class ReceiveMessageView(APIView):
     authentication_classes = [JWTAuthentication]  # Optional: Add if JWT authentication is required
     permission_classes = [IsAuthenticated]  # Optional: Only authenticated users can access
 
     def post(self, request):
         encrypted_message = request.data.get("message")
-        user_id = request.data.get("user_id")
 
-        if not encrypted_message or not user_id:
-            return Response({"error": "Message and user_id are required"}, status=status.HTTP_400_BAD_REQUEST)
+        if not encrypted_message:
+            return Response({"error": "Message is required"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             # Decrypt the received message
             decrypted_message = decrypt_message(encrypted_message)
 
             # Save the decrypted message in the database
-            received_message = ReceivedMessage.objects.create(user_id=user_id, message=decrypted_message)
+            received_message = ReceivedMessage.objects.create(user=request.user, message=decrypted_message)
 
             return Response({
                 "message": "Message received successfully",
@@ -95,8 +95,8 @@ class ReceiveMessageView(APIView):
             return Response({"error": "Failed to save or decrypt message"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def get(self, request):
-        # Retrieve all received messages from the database
-        received_messages = ReceivedMessage.objects.all()
+        # Fetch all messages in reverse order of timestamp
+        received_messages = ReceivedMessage.objects.all().order_by('-timestamp')
 
         # Serialize the data
         serializer = ReceivedMessageSerializer(received_messages, many=True)

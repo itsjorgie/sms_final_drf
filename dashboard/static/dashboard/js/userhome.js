@@ -36,7 +36,7 @@ function fetchReceivedMessages(system) {
     const token = localStorage.getItem("access_token");
     if (!token) {
         alert("You need to log in first.");
-        window.location.href = "/login"; // Redirect to login page
+        window.location.href = "/inbox"; // Redirect to login page
         return;
     }
 

@@ -91,7 +91,7 @@ function handleLoginSubmit(event, system) {
     })
     .then(data => {
         localStorage.setItem('access_token', data.access);
-        window.location.href = '/dashboard/userhome/';
+        window.location.href = '/dashboard/send_message/';
     })
     .catch(error => {
         alert(error.message);
