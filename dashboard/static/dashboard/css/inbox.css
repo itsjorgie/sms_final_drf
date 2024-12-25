@@ -145,11 +145,11 @@ li p {
     display: flex;
     justify-content: center; /* Center the Message Details text */
     align-items: center;
-    font-size: 18px; /* Adjust font size to fit better */
+    font-size: 12px; /* Adjust font size to fit better */
     font-weight: bold; /* Make the font bold */
-    background-color: #57115a; 
+    background-color: #e967ee; 
     color: white; /* White text */
-    padding: 8px 20px; /* Adjust padding to fit the text properly */
+    padding: 5px 15px; /* Adjust padding to fit the text properly */
     border-radius: 10px; /* Rounded corners */
     width: fit-content; /* Make the width fit content */
     margin: 0 auto; /* Center the header */
@@ -241,7 +241,7 @@ li:last-child {
 }
 
 li:hover {
-    background-color: #57115a;
+    background-color:  rgb(167, 227, 165);
     color: #ECEBDE;
     transform: scale(1.03); /* Slight zoom effect on hover */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
