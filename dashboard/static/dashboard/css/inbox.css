@@ -10,32 +10,32 @@ body {
 
 /* Header Styles */
 header {
-background-color: #3B1E54;
-color: white;
-padding: 10px 20px;
-display: flex;
-justify-content: space-between;
-align-items: center;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #3B1E54;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Logo and Title Section */
 .header-container {
-display: flex;
-justify-content: space-between;
-align-items: center;
-width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
 .logo-container {
-display: flex;
-align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .logo-container img {
-height: 50px;
-width: auto;
-margin-right: 10px;
+    height: 50px;
+    width: auto;
+    margin-right: 10px;
 }
 
 /* Back Button Styles */
@@ -105,6 +105,7 @@ li p {
     margin: 0;
 }
 
+/* No Messages Styling */
 .no-messages {
     text-align: center;
     font-size: 16px;
@@ -203,11 +204,10 @@ footer a {
 }
 
 .back-button {
-
     background-color: #ffffff;
     color: #3B1E54;
     padding: 8px 16px;
-    font-size: 20x;
+    font-size: 16px;
     font-weight: bold;
     border: none;
     border-radius: 6px;
@@ -215,9 +215,53 @@ footer a {
     transition: background-color 0.3s, transform 0.2s;
 }
 
-
 /* Message Styling */
 #messageContent {
     font-size: 18px;
     padding: 10px;
+    line-height: 1.5;
+}
+
+/* Fix for Message Content */
+ul li {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+/* Fixing Card Padding and Margin for Message List */
+ul li p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+ul li strong {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.no-messages {
+    font-style: italic;
+    color: #888888;
+}
+
+/* Card hover effects */
+ul li:hover {
+    transform: scale(1.03);
+    background-color: #4c0e40;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Modal Padding Fix */
+.modal-content {
+    padding: 25px;
+}
+
+/* Footer Sticky Fix */
+footer {
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
 }

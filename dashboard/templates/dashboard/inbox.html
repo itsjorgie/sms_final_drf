@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="{% static 'dashboard/css/inbox.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-
 </head>
 <body>
     <!-- Header -->
@@ -22,25 +21,33 @@
     <button class="back-button" onclick="window.location.href='{% url 'send_message' %}'">
         <i class="fas fa-arrow-right"></i> Back
     </button>
-    
 
     <!-- Main Content -->
     <h2>Your Inbox</h2>
 
-    <ul id="receivedMessagesList">
-        <!-- Messages will be dynamically inserted here -->
-    </ul>
+    <!-- Section for system1 messages -->
+    <div id="system1MessagesSection" style="display: none;">
+        <h3>System 1 Inbox</h3>
+        <ul id="receivedMessagesListSystem1">
+            <!-- System 1 Messages will be dynamically inserted here -->
+        </ul>
+    </div>
+
+    <!-- Section for system2 messages -->
+    <div id="system2MessagesSection" style="display: none;">
+        <h3>System 2 Inbox</h3>
+        <ul id="receivedMessagesListSystem2">
+            <!-- System 2 Messages will be dynamically inserted here -->
+        </ul>
+    </div>
 
     <!-- Modal for Viewing Message -->
     <div id="messageModal" class="modal">
         <div class="modal-content">
-            <!-- Close Button (X) positioned at the top-right of the modal -->
             <span class="close">&times;</span>
-
             <div class="modal-header">
                 <h2>Message Details</h2>
             </div>
-
             <div class="modal-body">
                 <p id="messageContent"></p>
             </div>
@@ -56,24 +63,35 @@
     </footer>
 
     <script>
-        // Show section
-        function showSection(sectionId) {
-            const sections = document.querySelectorAll("main > div");
-            sections.forEach(section => section.style.display = "none");
-        
-            const selectedSection = document.getElementById(sectionId);
-            if (selectedSection) {
-                selectedSection.style.display = "block";
+        // Show inbox and fetch messages based on the current system
+        function showInbox() {
+            const system = getCurrentSystem();
+            if (system === "system1") {
+                fetchReceivedMessages("system1");
+                document.getElementById("system1MessagesSection").style.display = "block";
+                document.getElementById("system2MessagesSection").style.display = "none";
+            } else if (system === "system2") {
+                fetchReceivedMessages("system2");
+                document.getElementById("system1MessagesSection").style.display = "none";
+                document.getElementById("system2MessagesSection").style.display = "block";
+            } else {
+                alert("Unable to determine the system.");
             }
         }
 
-        // Show inbox and fetch messages based on the current system
-        function showInbox() {
-            fetchReceivedMessages();
+        // Get current system based on the URL or any other condition
+        function getCurrentSystem() {
+            const currentUrl = window.location.href;
+            if (currentUrl.includes("8001")) {
+                return "system1";
+            } else if (currentUrl.includes("8002")) {
+                return "system2";
+            }
+            return null; // Default if no system detected
         }
 
-        // Fetch received messages
-        function fetchReceivedMessages() {
+        // Fetch received messages for a specific system
+        function fetchReceivedMessages(system) {
             const token = localStorage.getItem("access_token");
             if (!token) {
                 alert("You need to log in first.");
@@ -81,7 +99,11 @@
                 return;
             }
 
-            fetch("http://127.0.0.1:8001/api/system1/received/", {
+            const url = system === "system1"
+                ? "http://127.0.0.1:8001/api/system1/received/"
+                : "http://127.0.0.1:8002/api/system2/received/";
+
+            fetch(url, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -89,7 +111,10 @@
             })
             .then(response => response.json())
             .then(data => {
-                const messageList = document.getElementById("receivedMessagesList");
+                const messageList = system === "system1"
+                    ? document.getElementById("receivedMessagesListSystem1")
+                    : document.getElementById("receivedMessagesListSystem2");
+
                 messageList.innerHTML = ""; // Clear any previous messages
 
                 if (Array.isArray(data) && data.length === 0) {
