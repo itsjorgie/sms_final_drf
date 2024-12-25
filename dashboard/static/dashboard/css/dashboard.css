@@ -135,15 +135,15 @@ form button:hover {
 }
 
 /* Footer */
-footer {
-    background-color: #3B1E54;
-    color: white;
-    text-align: center;
-    padding: 2px 0;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}
+ footer {
+        background-color: #3B1E54;
+        color: rgb(167, 227, 165);
+        text-align: center;
+        padding: 2px 0;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+  }
 
 p {
     text-align: center;
