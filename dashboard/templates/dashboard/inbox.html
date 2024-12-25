@@ -141,8 +141,18 @@
                     messageList.appendChild(noMessagesItem);
                 } else {
                     data.forEach(msg => {
+                        const timestamp = new Date(msg.timestamp);
+                        const formattedDate = timestamp.toLocaleString("en-US", {
+                            year: "numeric",
+                            month: "2-digit",
+                            day: "2-digit",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            second: "2-digit",
+                            hour12: false
+                        });
                         const listItem = document.createElement("li");
-                        listItem.innerHTML = `<strong>${msg.timestamp}</strong><p>${msg.message}</p>`;
+                        listItem.innerHTML = `<strong>${formattedDate}</strong><p>${msg.message}</p>`;
                         messageList.appendChild(listItem);
                     });
                 }
