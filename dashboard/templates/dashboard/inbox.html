@@ -12,8 +12,41 @@
             font-family: 'Poppins', sans-serif;
             background-color: #ECEBDE;
             color: #3B1E54;
+            position: relative;
         }
 
+        /* Header Styles */
+        header {
+            background-color: #3B1E54;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        /* Back Button Styles */
+        .back-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #3B1E54;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .back-button:hover {
+            background-color: #8dc996;
+        }
+
+        /* Main Content Styles */
         h2 {
             text-align: center;
             margin: 20px 0;
@@ -62,16 +95,57 @@
             font-size: 16px;
             color: #888888;
         }
+
+        /* Footer Styles */
+        footer {
+            background-color: #3B1E54;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+        }
+
     </style>
 </head>
 <body>
+    <!-- Header -->
+    <header>
+        <h1>Inbox</h1>
+    </header>
+
+    <!-- Back Button -->
+    <button class="back-button" onclick="goBack()">Back</button>
+
+    <!-- Main Content -->
     <h2>Your Inbox</h2>
 
     <ul id="receivedMessagesList">
         <!-- Messages will be dynamically inserted here -->
     </ul>
 
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 MessagePro | <a href="/privacy">All rights reserved.</a></p>
+    </footer>
+
     <script>
+        // Go back to the send message page
+        function goBack() {
+            window.location.href = "/send_message"; // Change this URL to the path where your send message page is located
+        }
+
         // Show section
         function showSection(sectionId) {
             const sections = document.querySelectorAll("main > div");
@@ -142,15 +216,18 @@
                 } else {
                     data.forEach(msg => {
                         const timestamp = new Date(msg.timestamp);
-                        const formattedDate = timestamp.toLocaleString("en-US", {
-                            year: "numeric",
+                        
+                        // Format the date as 12-25-24, 8:00 AM
+                        const formattedDate = timestamp.toLocaleDateString("en-US", {
+                            year: "2-digit",
                             month: "2-digit",
-                            day: "2-digit",
+                            day: "2-digit"
+                        }) + ", " + timestamp.toLocaleTimeString("en-US", {
                             hour: "2-digit",
                             minute: "2-digit",
-                            second: "2-digit",
-                            hour12: false
+                            hour12: true
                         });
+
                         const listItem = document.createElement("li");
                         listItem.innerHTML = `<strong>${formattedDate}</strong><p>${msg.message}</p>`;
                         messageList.appendChild(listItem);
