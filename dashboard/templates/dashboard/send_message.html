@@ -1,150 +1,175 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Send Message</title>
-    <link rel="stylesheet" href="{% static 'dashboard/css/userhome.css' %}">
-    <script src="{% static 'dashboard/js/send_message.js' %}"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
+    <title>{% block title %}MessagePro{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'dashboard/css/inbox.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="{% static 'dashboard/images/logo_website.png' %}" type="image/png">
 </head>
-
 <body>
+    <!-- Header -->
     <header>
-        <div class="header-container">
-            <div class="logo-container">
-                <img src="{% static 'dashboard/images/logo_mp.png' %}" alt="Logo">
-            </div>
-            <!-- Inbox Button (Now in Header, Right-Aligned) -->
-            <div class="inbox-button-container1">
-                <button onclick="window.location.href='{% url 'inbox' %}'">
-                    <i class="fas fa-envelope"></i> View Messages
-                </button>
-            </div>            
-            
-            <div class="inbox-button-container">
-                <button onclick="window.location.href='http://127.0.0.1:8001/'">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </button>
-            </div>
-            
+        <div class="logo-container">
+            <img src="{% static 'dashboard/images/logo_mp.png' %}" alt="Logo">
         </div>
     </header>
-    <main>
-        <div class="content-wrapper">
-            <!-- Left Column: Image -->
-            <div class="image-container">
-                <img src="{% static 'dashboard/images/send.svg' %}" alt="Message Illustration">
+
+    <!-- Back Button -->
+    <button class="back-button" onclick="window.location.href='{% url 'send_message' %}'">
+        <i class="fas fa-arrow-right"></i> Back
+    </button>
+
+          <h5>  </h5>
+
+    <!-- Section for system1 messages -->
+    <div id="system1MessagesSection" style="display: none;">
+      
+        <ul id="receivedMessagesListSystem1">
+            <!-- System 1 Messages will be dynamically inserted here -->
+        </ul>
+    </div>
+
+    <!-- Section for system2 messages -->
+    <div id="system2MessagesSection" style="display: none;">
+        
+        <ul id="receivedMessagesListSystem2">
+            <!-- System 2 Messages will be dynamically inserted here -->
+        </ul>
+    </div>
+
+    <!-- Modal for Viewing Message -->
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <h4>Message Details</h4>
             </div>
-
-            <!-- Right Column: Form Container -->
-            <div class="form-container_send-message">
-                <!-- Notification about Server 2 -->
-                <div class="server-info">
-                    <img src="{% static 'dashboard/images/mp_logo.png' %}" alt="Logo">
-                </div>
-
-                <div id="feedback" class="feedback"></div>
-                <div id="loading" class="loading">Sending to Server 2...</div>
-
-                <form id="sendMessageFormElement" method="POST" action="{% url 'send_message' %}">
-                    {% csrf_token %}
-                    <label for="message">Message</label>
-                    <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required></textarea>
-                    <button type="submit">Send</button>
-                </form>
+            <div class="modal-body">
+                <p id="messageContent"></p>
+            </div>
+            <div class="sent-at">
+                <span>Sent At: <span id="messageTimestamp"></span></span>
             </div>
         </div>
-    </main>
+    </div>
 
+    <!-- Footer -->
     <footer>
         <p>&copy; 2024 MessagePro. All rights reserved.</p>
     </footer>
 
     <script>
-        // Automatically determine the current system based on the hostname or other logic
-        function getCurrentSystem() {
-            const hostname = window.location.hostname; // Get the current hostname
-            const port = window.location.port; // Get the current port
-
-            if (port === "8001") {
-                return "system1"; // If the current port is 8001, it's system1
-            } else if (port === "8002") {
-                return "system2"; // If the current port is 8002, it's system2
+        // Show inbox and fetch messages based on the current system
+        function showInbox() {
+            const system = getCurrentSystem();
+            if (system === "system1") {
+                fetchReceivedMessages("system1");
+                document.getElementById("system1MessagesSection").style.display = "block";
+                document.getElementById("system2MessagesSection").style.display = "none";
+            } else if (system === "system2") {
+                fetchReceivedMessages("system2");
+                document.getElementById("system1MessagesSection").style.display = "none";
+                document.getElementById("system2MessagesSection").style.display = "block";
+            } else {
+                alert("Unable to determine the system.");
             }
-
-            // Fallback if no matching system is found
-            console.error("Unable to determine the system. Defaulting to system1.");
-            return "system1"; // Default to system1
         }
 
-        // Send message
-        function sendMessage(event) {
-            event.preventDefault(); // Prevent form submission
+        // Get current system based on the URL or any other condition
+        function getCurrentSystem() {
+            const currentUrl = window.location.href;
+            if (currentUrl.includes("8001")) {
+                return "system1";
+            } else if (currentUrl.includes("8002")) {
+                return "system2";
+            }
+            return null; // Default if no system detected
+        }
 
-            // Get the form data
-            const formData = new FormData(document.getElementById("sendMessageFormElement"));
-            const data = {
-                message: formData.get("message"), // Get the message content from the form
-            };
-
-            // Get the CSRF token from the form
-            const csrfToken = formData.get("csrfmiddlewaretoken");
-
-            // Get the authentication token from localStorage
+        // Fetch received messages for a specific system
+        function fetchReceivedMessages(system) {
             const token = localStorage.getItem("access_token");
             if (!token) {
                 alert("You need to log in first.");
-                window.location.href = "/login"; // Redirect to the login page
+                window.location.href = "/inbox"; // Redirect to login page
                 return;
             }
 
-            // Determine the system to decide which URL to use
-            const system = getCurrentSystem();
-            const sendUrl = system === "system1"
-                ? "http://127.0.0.1:8001/api/system1/send/"
-                : "http://127.0.0.1:8002/api/system2/send/";
+            const url = system === "system1"
+                ? "http://127.0.0.1:8001/api/system1/received/"
+                : "http://127.0.0.1:8002/api/system2/received/";
 
-            // Debugging: Verify system and URL
-            console.log(`System: ${system}, URL: ${sendUrl}`);
-
-            // Send the data to the backend using Fetch API
-            fetch(sendUrl, {
-                method: "POST",
+            fetch(url, {
+                method: "GET",
                 headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`, // Bearer token for authentication
-                    "X-CSRFToken": csrfToken, // CSRF token from the form
+                    "Authorization": `Bearer ${token}`,
                 },
-                body: JSON.stringify(data), // Send message data in the body
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Failed to send message: ${response.statusText}`);
-                    }
-                    return response.json();
-                })
-                .then(responseData => {
-                    // Check for backend acknowledgment
-                    if (responseData.message) {
-                        alert("Message sent successfully!");
-                        document.getElementById("sendMessageFormElement").reset(); // Clear the form after sending
-                    } else {
-                        alert("Failed to send message.");
-                    }
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                    alert("An error occurred while sending the message.");
-                });
+            .then(response => response.json())
+            .then(data => {
+                const messageList = system === "system1"
+                    ? document.getElementById("receivedMessagesListSystem1")
+                    : document.getElementById("receivedMessagesListSystem2");
+
+                messageList.innerHTML = ""; // Clear any previous messages
+
+                if (Array.isArray(data) && data.length === 0) {
+                    const noMessagesItem = document.createElement("li");
+                    noMessagesItem.textContent = "No messages received yet.";
+                    messageList.appendChild(noMessagesItem);
+                } else {
+                    data.forEach(msg => {
+                        const timestamp = new Date(msg.timestamp);
+                        const formattedDate = timestamp.toLocaleDateString("en-US", {
+                            year: "2-digit",
+                            month: "2-digit",
+                            day: "2-digit"
+                        }) + ", " + timestamp.toLocaleTimeString("en-US", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true
+                        });
+
+                        const listItem = document.createElement("li");
+                        listItem.innerHTML = `<strong>${formattedDate}</strong><p>${msg.message}</p>`;
+                        listItem.onclick = () => openModal(msg); // Add click event to open modal
+                        messageList.appendChild(listItem);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred while fetching received messages.");
+            });
         }
 
-        // Add event listener to form submit
-        document.getElementById("sendMessageFormElement").addEventListener("submit", sendMessage);
+        // Open the modal with message details
+        function openModal(message) {
+            const modal = document.getElementById("messageModal");
+            const messageContent = document.getElementById("messageContent");
+            const messageTimestamp = document.getElementById("messageTimestamp");
+
+            messageContent.textContent = message.message;
+            messageTimestamp.textContent = new Date(message.timestamp).toLocaleString();
+
+            modal.style.display = "block";
+        }
+
+        // Close the modal
+        function closeModal() {
+            const modal = document.getElementById("messageModal");
+            modal.style.display = "none";
+        }
+
+        // Close modal when clicking the close button (X)
+        document.querySelector(".close").onclick = closeModal;
+
+        // Call showInbox when page loads to fetch messages
+        showInbox();
     </script>
 </body>
-
 </html>
