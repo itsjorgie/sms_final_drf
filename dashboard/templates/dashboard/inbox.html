@@ -10,142 +10,135 @@
 <body>
     <h2>Your Inbox</h2>
 
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>
-                    <strong>{{ message.timestamp }}</strong>
-                    <p>{{ message.message }}</p>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No messages received yet.</p>
-    {% endif %}
-</body>
+    <ul id="receivedMessagesList">
+        <!-- Messages will be dynamically inserted here -->
+    </ul>
 
-<script>// Show section
-    // Show section
-function showSection(sectionId) {
-    const sections = document.querySelectorAll("main > div");
-    sections.forEach(section => section.style.display = "none");
-
-    const selectedSection = document.getElementById(sectionId);
-    if (selectedSection) {
-        selectedSection.style.display = "block";
-    }
-}
-
-// Determine the current system based on the URL or configuration
-function getCurrentSystem() {
-    const currentUrl = window.location.href;
-    if (currentUrl.includes("8001")) {
-        return "system1";
-    } else if (currentUrl.includes("8002")) {
-        return "system2";
-    }
-
-    // Default system if URL is not detected (could be improved)
-    return null;
-}
-
-// Show inbox and fetch messages based on the current system
-function showInbox() {
-    const system = getCurrentSystem();
-    if (!system) {
-        alert("Unable to determine the system.");
-        return;
-    }
-    fetchReceivedMessages(system);
-    showSection("receivedMessagesForm");
-}
-
-// Fetch received messages
-function fetchReceivedMessages(system) {
-    const token = localStorage.getItem("access_token");
-    if (!token) {
-        alert("You need to log in first.");
-        window.location.href = "/inbox"; // Redirect to login page
-        return;
-    }
-
-    const receiveUrl = system === "system1"
-        ? "http://127.0.0.1:8001/api/system1/received/"
-        : "http://127.0.0.1:8002/api/system2/received/";
-
-    fetch(receiveUrl, {
-        method: "GET",
-        headers: {
-            "Authorization": `Bearer ${token}`,
-        },
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Failed to fetch messages: ${response.statusText}`);
+    <script>
+        // Show section
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll("main > div");
+            sections.forEach(section => section.style.display = "none");
+        
+            const selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.style.display = "block";
+            }
         }
-        return response.json();
-    })
-    .then(data => {
-        const messageList = document.getElementById("receivedMessagesList");
-        messageList.innerHTML = ""; // Clear any previous messages
-
-        if (Array.isArray(data) && data.length === 0) {
-            const noMessagesItem = document.createElement("li");
-            noMessagesItem.textContent = "No messages received yet.";
-            messageList.appendChild(noMessagesItem);
-        } else {
-            data.forEach(msg => {
-                const listItem = document.createElement("li");
-                listItem.textContent = msg.message;
-                messageList.appendChild(listItem);
+        
+        // Determine the current system based on the URL or configuration
+        function getCurrentSystem() {
+            const currentUrl = window.location.href;
+            if (currentUrl.includes("8001")) {
+                return "system1";
+            } else if (currentUrl.includes("8002")) {
+                return "system2";
+            }
+        
+            // Default system if URL is not detected (could be improved)
+            return null;
+        }
+        
+        // Show inbox and fetch messages based on the current system
+        function showInbox() {
+            const system = getCurrentSystem();
+            if (!system) {
+                alert("Unable to determine the system.");
+                return;
+            }
+            fetchReceivedMessages(system);
+            showSection("receivedMessagesForm");
+        }
+        
+        // Fetch received messages
+        function fetchReceivedMessages(system) {
+            const token = localStorage.getItem("access_token");
+            if (!token) {
+                alert("You need to log in first.");
+                window.location.href = "/inbox"; // Redirect to login page
+                return;
+            }
+        
+            const receiveUrl = system === "system1"
+                ? "http://127.0.0.1:8001/api/system1/received/"
+                : "http://127.0.0.1:8002/api/system2/received/";
+        
+            fetch(receiveUrl, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch messages: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const messageList = document.getElementById("receivedMessagesList");
+                messageList.innerHTML = ""; // Clear any previous messages
+        
+                if (Array.isArray(data) && data.length === 0) {
+                    const noMessagesItem = document.createElement("li");
+                    noMessagesItem.textContent = "No messages received yet.";
+                    messageList.appendChild(noMessagesItem);
+                } else {
+                    data.forEach(msg => {
+                        const listItem = document.createElement("li");
+                        listItem.innerHTML = `<strong>${msg.timestamp}</strong><p>${msg.message}</p>`;
+                        messageList.appendChild(listItem);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred while fetching received messages.");
             });
         }
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        alert("An error occurred while fetching received messages.");
-    });
-}
-
-// Send a message to the appropriate system
-function sendMessage() {
-    const token = localStorage.getItem("access_token");
-    if (!token) {
-        alert("You need to log in first.");
-        window.location.href = "/inbox"; // Redirect to login page
-        return;
-    }
-
-    const message = document.getElementById("messageInput").value;
-    const system = getCurrentSystem();
-    const sendUrl = system === "system1"
-        ? "http://127.0.0.1:8001/api/system1/send/"
-        : "http://127.0.0.1:8002/api/system2/send/";
-
-    fetch(sendUrl, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
-        },
-        body: JSON.stringify({ message: message }),
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Failed to send message: ${response.statusText}`);
+        
+        // Send a message to the appropriate system
+        function sendMessage() {
+            const token = localStorage.getItem("access_token");
+            if (!token) {
+                alert("You need to log in first.");
+                window.location.href = "/inbox"; // Redirect to login page
+                return;
+            }
+        
+            const message = document.getElementById("messageInput").value;
+            const system = getCurrentSystem();
+            const sendUrl = system === "system1"
+                ? "http://127.0.0.1:8001/api/system1/send/"
+                : "http://127.0.0.1:8002/api/system2/send/";
+        
+            fetch(sendUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
+                body: JSON.stringify({ message: message }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Failed to send message: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Clear the message input and refresh the inbox
+                document.getElementById("messageInput").value = '';
+                fetchReceivedMessages(system);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred while sending the message.");
+            });
         }
-        return response.json();
-    })
-    .then(data => {
-        // Clear the message input and refresh the inbox
-        document.getElementById("messageInput").value = '';
-        fetchReceivedMessages(system);
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        alert("An error occurred while sending the message.");
-    });
-}
 
+        // Call showInbox when page loads to fetch messages
+        showInbox();
     </script>
+</body>
 </html>

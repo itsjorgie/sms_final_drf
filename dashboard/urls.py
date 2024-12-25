@@ -19,5 +19,4 @@ urlpatterns = [
     path('system2/', include('system2.urls')),  # Include system2 URLs
     path('send_message/', views.send_message, name='send_message'),
     path('inbox/', views.inbox, name='inbox'),
-
 ]
