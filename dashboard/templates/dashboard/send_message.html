@@ -56,6 +56,7 @@
     </footer>
     <script>
         // Automatically determine the current system based on the hostname or other logic
+<<<<<<< HEAD
         function getCurrentSystem() {
             const hostname = window.location.hostname; // Get the current hostname
             const port = window.location.port; // Get the current port
@@ -134,6 +135,88 @@
 
         // Add event listener to form submit
         document.getElementById("sendMessageFormElement").addEventListener("submit", sendMessage);
+=======
+      // Automatically determine the current system based on the hostname or other logic
+function getCurrentSystem() {
+    const hostname = window.location.hostname; // Get the current hostname
+    const port = window.location.port; // Get the current port
+
+    if (port === "8001") {
+        return "system1"; // If the current port is 8001, it's system1
+    } else if (port === "8002") {
+        return "system2"; // If the current port is 8002, it's system2
+    }
+
+    // Fallback if no matching system is found
+    console.error("Unable to determine the system. Defaulting to system1.");
+    return "system1"; // Default to system1
+}
+
+// Send message
+function sendMessage(event) {
+    event.preventDefault(); // Prevent form submission
+
+    // Get the form data
+    const formData = new FormData(document.getElementById("sendMessageFormElement"));
+    const data = {
+        message: formData.get("message"), // Get the message content from the form
+    };
+
+    // Get the CSRF token from the form
+    const csrfToken = formData.get("csrfmiddlewaretoken");
+
+    // Get the authentication token from localStorage
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+        alert("You need to log in first.");
+        window.location.href = "/login"; // Redirect to the login page
+        return;
+    }
+
+    // Determine the system to decide which URL to use
+    const system = getCurrentSystem();
+    const sendUrl = system === "system1"
+        ? "http://127.0.0.1:8001/api/system1/send/"
+        : "http://127.0.0.1:8002/api/system2/send/";
+
+    // Debugging: Verify system and URL
+    console.log(`System: ${system}, URL: ${sendUrl}`);
+
+    // Send the data to the backend using Fetch API
+    fetch(sendUrl, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`, // Bearer token for authentication
+            "X-CSRFToken": csrfToken, // CSRF token from the form
+        },
+        body: JSON.stringify(data), // Send message data in the body
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to send message: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(responseData => {
+            // Check for backend acknowledgment
+            if (responseData.message) {
+                alert("Message sent successfully!");
+                document.getElementById("sendMessageFormElement").reset(); // Clear the form after sending
+            } else {
+                alert("Failed to send message.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert(`An error occurred: ${error.message}`);
+        });
+}
+
+// Add event listener to form submit
+document.getElementById("sendMessageFormElement").addEventListener("submit", sendMessage);
+
+>>>>>>> d8b4d971118ad0ff4d74ccabe270280bc89a2571
     </script>
 
 </body>

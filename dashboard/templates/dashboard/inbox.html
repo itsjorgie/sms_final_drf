@@ -1,18 +1,259 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inbox</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            background-color: #ECEBDE;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #3B1E54; /* Dark text color */
+            position: relative;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #3B1E54;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        /* Back Button Styles */
+        .back-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: white;
+            color: #3B1E54;
+            border: 2px solid #3B1E54;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        /* Hover Effects */
+        .back-button:hover {
+            background-color: #fff;
+            transform: scale(1.1);
+        }
+
+        /* Main Content Styles */
+        h2 {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            max-width: 600px;
+            margin: 20px auto;
+            border: 1px solid #3B1E54;
+            border-radius: 8px;
+            background-color: #ffffff;
+        }
+
+        li {
+            padding: 15px;
+            border-bottom: 1px solid #ECEBDE;
+            font-size: 16px;
+            cursor: pointer; /* Make messages clickable */
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        li:hover {
+            background-color: #57115a;
+            color: #ECEBDE;
+            transition: background-color 0.3s ease;
+        }
+
+        li strong {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        li p {
+            margin: 0;
+        }
+
+        .no-messages {
+            text-align: center;
+            font-size: 16px;
+            color: #888888;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #3B1E54;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            overflow: auto;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+            position: relative; /* Add relative positioning to position the close button */
+        }
+
+        /* Modal Header (Message Details) Styling */
+        .modal-header {
+            display: flex;
+            justify-content: center; /* Center the Message Details text */
+            align-items: center;
+            font-size: 18px; /* Adjust font size to fit better */
+            font-weight: bold; /* Make the font bold */
+            background-color: #57115a; 
+            color: white; /* White text */
+            padding: 8px 20px; /* Adjust padding to fit the text properly */
+            border-radius: 10px; /* Rounded corners */
+            width: fit-content; /* Make the width fit content */
+            margin: 0 auto; /* Center the header */
+        }
+
+        /* Close Button Styling (X button) */
+        .close {
+            position: absolute;
+            top: 10px; /* Position at the top */
+            right: 10px; /* Position at the right */
+            color: #3B1E54;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Modal Body (Message Content) */
+        .modal-body {
+            margin-top: 10px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        /* Sent At Section */
+        .sent-at {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .modal-footer {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        .back-button {
+
+            background-color: #ffffff;
+            color: #3B1E54;
+            padding: 8px 16px;
+            font-size: 20x;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        
+
+        /* Message Styling */
+        #messageContent {
+            font-size: 18px;
+            padding: 10px;
+        }
+
+    </style>
 </head>
 <body>
+    <!-- Header -->
+    <header>
+        <h1>Inbox</h1>
+    </header>
+
+    <!-- Back Button -->
+    <button class="back-button" onclick="window.location.href='{% url 'send_message' %}'">Back</button>
+
+    <!-- Main Content -->
     <h2>Your Inbox</h2>
 
     <ul id="receivedMessagesList">
         <!-- Messages will be dynamically inserted here -->
     </ul>
+
+    <!-- Modal for Viewing Message -->
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            <!-- Close Button (X) positioned at the top-right of the modal -->
+            <span class="close">&times;</span>
+
+            <div class="modal-header">
+                <h2>Message Details</h2>
+            </div>
+
+            <div class="modal-body">
+                <p id="messageContent"></p>
+            </div>
+            <div class="sent-at">
+                <span>Sent At: <span id="messageTimestamp"></span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 MessagePro | <a href="/privacy">All rights reserved.</a></p>
+    </footer>
 
     <script>
         // Show section
@@ -25,68 +266,52 @@
                 selectedSection.style.display = "block";
             }
         }
-        
-        // Determine the current system based on the URL or configuration
-        function getCurrentSystem() {
-            const currentUrl = window.location.href;
-            if (currentUrl.includes("8001")) {
-                return "system1";
-            } else if (currentUrl.includes("8002")) {
-                return "system2";
-            }
-        
-            // Default system if URL is not detected (could be improved)
-            return null;
-        }
-        
+
         // Show inbox and fetch messages based on the current system
         function showInbox() {
-            const system = getCurrentSystem();
-            if (!system) {
-                alert("Unable to determine the system.");
-                return;
-            }
-            fetchReceivedMessages(system);
-            showSection("receivedMessagesForm");
+            fetchReceivedMessages();
         }
-        
+
         // Fetch received messages
-        function fetchReceivedMessages(system) {
+        function fetchReceivedMessages() {
             const token = localStorage.getItem("access_token");
             if (!token) {
                 alert("You need to log in first.");
                 window.location.href = "/inbox"; // Redirect to login page
                 return;
             }
-        
-            const receiveUrl = system === "system1"
-                ? "http://127.0.0.1:8001/api/system1/received/"
-                : "http://127.0.0.1:8002/api/system2/received/";
-        
-            fetch(receiveUrl, {
+
+            fetch("http://127.0.0.1:8001/api/system1/received/", {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,
                 },
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch messages: ${response.statusText}`);
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
                 const messageList = document.getElementById("receivedMessagesList");
                 messageList.innerHTML = ""; // Clear any previous messages
-        
+
                 if (Array.isArray(data) && data.length === 0) {
                     const noMessagesItem = document.createElement("li");
                     noMessagesItem.textContent = "No messages received yet.";
                     messageList.appendChild(noMessagesItem);
                 } else {
                     data.forEach(msg => {
+                        const timestamp = new Date(msg.timestamp);
+                        const formattedDate = timestamp.toLocaleDateString("en-US", {
+                            year: "2-digit",
+                            month: "2-digit",
+                            day: "2-digit"
+                        }) + ", " + timestamp.toLocaleTimeString("en-US", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true
+                        });
+
                         const listItem = document.createElement("li");
-                        listItem.innerHTML = `<strong>${msg.timestamp}</strong><p>${msg.message}</p>`;
+                        listItem.innerHTML = `<strong>${formattedDate}</strong><p>${msg.message}</p>`;
+                        listItem.onclick = () => openModal(msg); // Add click event to open modal
                         messageList.appendChild(listItem);
                     });
                 }
@@ -96,46 +321,27 @@
                 alert("An error occurred while fetching received messages.");
             });
         }
-        
-        // Send a message to the appropriate system
-        function sendMessage() {
-            const token = localStorage.getItem("access_token");
-            if (!token) {
-                alert("You need to log in first.");
-                window.location.href = "/inbox"; // Redirect to login page
-                return;
-            }
-        
-            const message = document.getElementById("messageInput").value;
-            const system = getCurrentSystem();
-            const sendUrl = system === "system1"
-                ? "http://127.0.0.1:8001/api/system1/send/"
-                : "http://127.0.0.1:8002/api/system2/send/";
-        
-            fetch(sendUrl, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
-                },
-                body: JSON.stringify({ message: message }),
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Failed to send message: ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Clear the message input and refresh the inbox
-                document.getElementById("messageInput").value = '';
-                fetchReceivedMessages(system);
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                alert("An error occurred while sending the message.");
-            });
+
+        // Open the modal with message details
+        function openModal(message) {
+            const modal = document.getElementById("messageModal");
+            const messageContent = document.getElementById("messageContent");
+            const messageTimestamp = document.getElementById("messageTimestamp");
+
+            messageContent.textContent = message.message;
+            messageTimestamp.textContent = new Date(message.timestamp).toLocaleString();
+
+            modal.style.display = "block";
         }
+
+        // Close the modal
+        function closeModal() {
+            const modal = document.getElementById("messageModal");
+            modal.style.display = "none";
+        }
+
+        // Close modal when clicking the close button (X)
+        document.querySelector(".close").onclick = closeModal;
 
         // Call showInbox when page loads to fetch messages
         showInbox();
