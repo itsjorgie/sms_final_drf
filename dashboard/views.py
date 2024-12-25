@@ -34,16 +34,32 @@ def send_message(request):
 
     return render(request, 'dashboard/send_message.html')
 
+from django.shortcuts import render, redirect
+from .models import System1ReceivedMessage, System2ReceivedMessage
+
 def inbox(request):
     # Check if the user is authenticated
     if not request.user.is_authenticated:
         return redirect('login')  # Redirect to login if the user is not authenticated
 
+    # Fetch messages from both systems
     system1_received_messages = System1ReceivedMessage.objects.filter(user=request.user).order_by('-timestamp')
     system2_received_messages = System2ReceivedMessage.objects.filter(user=request.user).order_by('-timestamp')
 
-    combined_received_messages = list(system1_received_messages) + list(system2_received_messages)
+    # Debugging: Print the number of messages retrieved
+    print(f"System1 received messages: {system1_received_messages.count()}")
+    print(f"System2 received messages: {system2_received_messages.count()}")
 
+    # Combine and sort the messages by timestamp in descending order
+    combined_received_messages = sorted(
+        list(system1_received_messages) + list(system2_received_messages),
+        key=lambda x: x.timestamp, reverse=True
+    )
+
+    # Debugging: Print the number of combined messages
+    print(f"Total combined messages: {len(combined_received_messages)}")
+
+    # Render the template and pass the combined and sorted messages
     return render(request, 'dashboard/inbox.html', {'messages': combined_received_messages})
 
 # Custom login view

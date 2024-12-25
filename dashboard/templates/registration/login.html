@@ -5,34 +5,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="{% static 'dashboard/css/login.css' %}">
-    <script src="{% static 'dashboard/js/dashboard.js' %}"></script>
+    <title>Inbox</title>
+    <script src="{% static 'dashboard/js/userhome.js' %}"></script>
 </head>
 <body>
-    <header>
-        <img src="{% static 'dashboard/images/logo_mp.png' %}" alt="Logo">
-    </header>
-
-    <main>
-        <div class="form-container">
-            <h2>Login</h2>
-            <form method="POST">
-                {% csrf_token %}
-                <div class="input-wrapper">
-                    <input type="text" name="username" placeholder="Username" required>
-                </div>
-                <div class="input-wrapper">
-                    <input type="password" name="password" placeholder="Password" required>
-                </div>
-                <button type="submit">Login</button>
-            </form>
-            <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
-        </div>
-    </main>
-
-    <footer>
-        <p>&copy; 2024 MessagePro. All rights reserved.</p>
-    </footer>
+    <h1>Inbox</h1>
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message.timestamp }} - {{ message.message }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No messages received yet.</p>
+    {% endif %}
 </body>
 </html>
