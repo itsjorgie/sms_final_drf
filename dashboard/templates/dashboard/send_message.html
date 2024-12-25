@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<<<<<<< HEAD
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,68 +38,6 @@
             <!-- Left Column: Image -->
             <div class="image-container">
                 <img src="{% static 'dashboard/images/send.svg' %}" alt="Message Illustration">
-=======
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}MessagePro{% endblock %}</title>
-        <link rel="stylesheet" href="{% static 'dashboard/css/userhome.css' %}">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link rel="icon" href="{% static 'dashboard/images/logo_website.png' %}" type="image/png">
-        <script src="{% static 'dashboard/js/send_message.js' %}"></script>
-    </head>
-
-    <body>
-        <header>
-            <div class="header-container">
-                <div class="logo-container">
-                    <img src="{% static 'dashboard/images/logo_mp.png' %}" alt="Logo">
-                </div>
-               <!-- Inbox Button (Now in Header, Right-Aligned) -->
-            <!-- Inbox Button (Now in Header, Right-Aligned) -->
-         
-    
-        <!-- Buttons Section -->
-        <div class="header-buttons">
-            <!-- Inbox Button -->
-            <button onclick="window.location.href='{% url 'inbox' %}'">
-                <i class="fas fa-envelope"></i> View Messages
-            </button>
-            
-            <!-- Logout Button -->
-            <button onclick="window.location.href='http://127.0.0.1:8001/'">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </button>
-        </div>
-    </div>
-</header>  
-        <main>
-
-            <div class="content-wrapper">
-                <!-- Left Column: Image -->
-                <div class="image-container">
-                    <img src="{% static 'dashboard/images/send.svg' %}" alt="Message Illustration">
-                </div>
-
-                <!-- Right Column: Form Container -->
-                <div class="form-container_send-message">
-                    <!-- Notification about Server 2 -->
-                    <div class="server-info">
-                        <img src="{% static 'dashboard/images/mp_logo.png' %}" alt="Logo">
-                    </div>
-
-                    <div id="feedback" class="feedback"></div>
-                    <div id="loading" class="loading">Sending to Server 2...</div>
-
-                    <form id="sendMessageFormElement" method="POST" action="{% url 'send_message' %}">
-                        {% csrf_token %}
-                        <label for="message">Message</label>
-                        <textarea id="message" name="message" rows="5" placeholder="Write your message here..."
-                            required></textarea>
-                        <button type="submit">Send</button>
-                    </form>
-                </div>
->>>>>>> 14268240f53b62ec00d44126e5803605e85cc37f
             </div>
 
             <!-- Right Column: Form Container -->
@@ -139,7 +76,6 @@
                 return "system2"; // If the current port is 8002, it's system2
             }
 
-<<<<<<< HEAD
             // Fallback if no matching system is found
             console.error("Unable to determine the system. Defaulting to system1.");
             return "system1"; // Default to system1
@@ -212,71 +148,3 @@
 </body>
 
 </html>
-=======
-            function sendMessage(event) {
-    event.preventDefault(); // Prevent form submission
-
-    // Get the form data
-    const formData = new FormData(document.getElementById("sendMessageFormElement"));
-    const data = {
-        message: formData.get("message"), // Get the message content from the form
-    };
-
-    // Get the CSRF token from the form
-    const csrfToken = formData.get("csrfmiddlewaretoken");
-
-    // Get the authentication token from localStorage
-    const token = localStorage.getItem("access_token");
-    if (!token) {
-        alert("You need to log in first.");
-        window.location.href = "/login"; // Redirect to the login page
-        return;
-    }
-
-    // Determine the system to decide which URL to use
-    const system = getCurrentSystem();
-    const sendUrl = system === "system1"
-        ? "http://127.0.0.1:8001/api/system1/send/"
-        : "http://127.0.0.1:8002/api/system2/send/";
-
-    // Debugging: Verify system and URL
-    console.log(`System: ${system}, URL: ${sendUrl}`);
-
-    // Send the data to the backend using Fetch API
-    fetch(sendUrl, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`, // Bearer token for authentication
-            "X-CSRFToken": csrfToken, // CSRF token from the form
-        },
-        body: JSON.stringify(data), // Send message data in the body
-    })
-        .then((response) => {
-            if (!response.ok) {
-                // If the response is not OK, throw an error with status
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json(); // Parse JSON response
-        })
-        .then((responseData) => {
-            // Check for backend acknowledgment
-            if (responseData && responseData.message) {
-                alert("Message sent successfully!");
-                document.getElementById("sendMessageFormElement").reset(); // Clear the form after sending
-            } else {
-                alert("Message sent to the database, but acknowledgment failed.");
-            }
-        })
-        .catch((error) => {
-            console.error("Error:", error);
-            alert("An error occurred while sending the message.");
-        });
-}
-
-        // Add event listener to form submit
-        document.getElementById("sendMessageFormElement").addEventListener("submit", sendMessage);
-</script>
-
-    </html>
->>>>>>> 14268240f53b62ec00d44126e5803605e85cc37f
