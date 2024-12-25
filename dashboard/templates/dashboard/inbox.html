@@ -41,14 +41,14 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            font-weight: bold; /* Text now bold */
+            font-weight: bold;
             transition: transform 0.3s ease, background-color 0.3s ease;
         }
 
         /* Hover Effects */
         .back-button:hover {
             background-color: #fff;
-            transform: scale(1.1); /* Zoom-in effect */
+            transform: scale(1.1);
         }
 
         /* Main Content Styles */
@@ -73,6 +73,7 @@
             padding: 15px;
             border-bottom: 1px solid #ECEBDE;
             font-size: 16px;
+            cursor: pointer; /* Make messages clickable */
         }
 
         li:last-child {
@@ -80,7 +81,7 @@
         }
 
         li:hover {
-            background-color: #3B1E54;
+            background-color: #8dc996;
             color: #ECEBDE;
             transition: background-color 0.3s ease;
         }
@@ -121,6 +122,93 @@
             color: white;
             text-decoration: none;
         }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            overflow: auto;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+            position: relative; /* Add relative positioning to position the close button */
+        }
+
+        /* Modal Header (Message Details) Styling */
+        .modal-header {
+            display: flex;
+            justify-content: center; /* Center the Message Details text */
+            align-items: center;
+            font-size: 18px; /* Adjust font size to fit better */
+            font-weight: bold; /* Make the font bold */
+            background-color: #8dc996; /* Green background */
+            color: white; /* White text */
+            padding: 8px 20px; /* Adjust padding to fit the text properly */
+            border-radius: 10px; /* Rounded corners */
+            width: fit-content; /* Make the width fit content */
+            margin: 0 auto; /* Center the header */
+        }
+
+        /* Close Button Styling (X button) */
+        .close {
+            position: absolute;
+            top: 10px; /* Position at the top */
+            right: 10px; /* Position at the right */
+            color: #3B1E54;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Modal Body (Message Content) */
+        .modal-body {
+            margin-top: 10px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        /* Sent At Section */
+        .sent-at {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .modal-footer {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        .back-button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #8dc996;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Message Styling */
+        #messageContent {
+            font-size: 18px;
+            padding: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -139,6 +227,25 @@
         <!-- Messages will be dynamically inserted here -->
     </ul>
 
+    <!-- Modal for Viewing Message -->
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            <!-- Close Button (X) positioned at the top-right of the modal -->
+            <span class="close">&times;</span>
+
+            <div class="modal-header">
+                <h2>Message Details</h2>
+            </div>
+
+            <div class="modal-body">
+                <p id="messageContent"></p>
+            </div>
+            <div class="sent-at">
+                <span>Sent At: <span id="messageTimestamp"></span></span>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer>
         <p>&copy; 2024 MessagePro | <a href="/privacy">All rights reserved.</a></p>
@@ -155,59 +262,32 @@
                 selectedSection.style.display = "block";
             }
         }
-        
-        // Determine the current system based on the URL or configuration
-        function getCurrentSystem() {
-            const currentUrl = window.location.href;
-            if (currentUrl.includes("8001")) {
-                return "system1";
-            } else if (currentUrl.includes("8002")) {
-                return "system2";
-            }
-        
-            return null; // Default system if URL is not detected
-        }
-        
+
         // Show inbox and fetch messages based on the current system
         function showInbox() {
-            const system = getCurrentSystem();
-            if (!system) {
-                alert("Unable to determine the system.");
-                return;
-            }
-            fetchReceivedMessages(system);
-            showSection("receivedMessagesForm");
+            fetchReceivedMessages();
         }
-        
+
         // Fetch received messages
-        function fetchReceivedMessages(system) {
+        function fetchReceivedMessages() {
             const token = localStorage.getItem("access_token");
             if (!token) {
                 alert("You need to log in first.");
                 window.location.href = "/inbox"; // Redirect to login page
                 return;
             }
-        
-            const receiveUrl = system === "system1"
-                ? "http://127.0.0.1:8001/api/system1/received/"
-                : "http://127.0.0.1:8002/api/system2/received/";
 
-            fetch(receiveUrl, {
+            fetch("http://127.0.0.1:8001/api/system1/received/", {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,
                 },
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch messages: ${response.statusText}`);
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
                 const messageList = document.getElementById("receivedMessagesList");
                 messageList.innerHTML = ""; // Clear any previous messages
-        
+
                 if (Array.isArray(data) && data.length === 0) {
                     const noMessagesItem = document.createElement("li");
                     noMessagesItem.textContent = "No messages received yet.";
@@ -215,8 +295,6 @@
                 } else {
                     data.forEach(msg => {
                         const timestamp = new Date(msg.timestamp);
-                        
-                        // Format the date as 12-25-24, 8:00 AM
                         const formattedDate = timestamp.toLocaleDateString("en-US", {
                             year: "2-digit",
                             month: "2-digit",
@@ -229,6 +307,7 @@
 
                         const listItem = document.createElement("li");
                         listItem.innerHTML = `<strong>${formattedDate}</strong><p>${msg.message}</p>`;
+                        listItem.onclick = () => openModal(msg); // Add click event to open modal
                         messageList.appendChild(listItem);
                     });
                 }
@@ -238,7 +317,28 @@
                 alert("An error occurred while fetching received messages.");
             });
         }
-        
+
+        // Open the modal with message details
+        function openModal(message) {
+            const modal = document.getElementById("messageModal");
+            const messageContent = document.getElementById("messageContent");
+            const messageTimestamp = document.getElementById("messageTimestamp");
+
+            messageContent.textContent = message.message;
+            messageTimestamp.textContent = new Date(message.timestamp).toLocaleString();
+
+            modal.style.display = "block";
+        }
+
+        // Close the modal
+        function closeModal() {
+            const modal = document.getElementById("messageModal");
+            modal.style.display = "none";
+        }
+
+        // Close modal when clicking the close button (X)
+        document.querySelector(".close").onclick = closeModal;
+
         // Call showInbox when page loads to fetch messages
         showInbox();
     </script>
