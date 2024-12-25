@@ -5,43 +5,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Send Message</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <style>
-        .message-list { margin-top: 20px; }
-        .message-item { padding: 10px; border-bottom: 1px solid #ddd; }
-        .error { color: red; }
-        .success { color: green; }
-        .loading { display: none; }
-    </style>
+    <link rel="stylesheet" href="{% static 'dashboard/css/userhome.css' %}">
+    <link rel="stylesheet" href="{% static 'dashboard/css/send_message.css' %}">
     <script src="{% static 'dashboard/js/send_message.js' %}"></script>
 </head>
 <body>
-    <h2>Send Message</h2>
-    <!-- Inbox Button -->
-    
-    <div style="margin-bottom: 20px;">
-        <button onclick="window.location.href='{% url 'inbox' %}'" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
-            Go to Inbox
-        </button>
-    </div>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="{% static 'dashboard/images/logo_mp.png' %}" alt="Logo">
+            </div>
+            <!-- Inbox Button (Now in Header, Right-Aligned) -->
+            <div class="inbox-button-container">
+                <button onclick="window.location.href='{% url 'inbox' %}'">Go to Inbox</button>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <!-- Notification about Server 2 -->
+            <div class="server-info">
+                <p>📡 Messages from this form will be routed to <strong>Server 2</strong>. Please ensure all content complies with our guidelines.</p>
+            </div>
 
-    <!-- Message List -->
-    <div id="messageList" class="message-list"></div>
+            
+            <div id="feedback" class="feedback"></div>
+            <div id="loading" class="loading">Sending to Server 2...</div>
 
-    <!-- Feedback -->
-    <div id="feedback" class="feedback"></div>
-
-    <!-- Loading Indicator -->
-    <div id="loading" class="loading" style="display: none;">Sending...</div>
-
-    <!-- Message Form -->
-    <form id="sendMessageFormElement" method="POST" action="{% url 'send_message' %}">
-        {% csrf_token %}
-        <label for="message">Message</label>
-        <textarea name="message" rows="5" required></textarea><br>
-        <button type="submit">Send</button>
-    </form>
-
+            <form id="sendMessageFormElement" method="POST" action="{% url 'send_message' %}">
+                {% csrf_token %}
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required></textarea>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 MessagePro. All rights reserved.</p>
+    </footer>
     <script>
         // Automatically determine the current system based on the hostname or other logic
         function getCurrentSystem() {
@@ -123,7 +124,6 @@
         // Add event listener to form submit
         document.getElementById("sendMessageFormElement").addEventListener("submit", sendMessage);
     </script>
-    
     
 </body>
 </html>

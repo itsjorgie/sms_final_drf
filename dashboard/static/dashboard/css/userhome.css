@@ -1,3 +1,4 @@
+/* General Styling */
 body {
     background-color: #ECEBDE;
     font-family: 'Poppins', sans-serif;
@@ -5,6 +6,7 @@ body {
     padding: 0;
 }
 
+/* Header Styling */
 header {
     background-color: #3B1E54;
     color: white;
@@ -15,231 +17,177 @@ header {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-header img {
+/* Logo and Title Section */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo-container img {
     height: 50px;
     width: auto;
+    margin-right: 10px;
 }
 
-/* Navigation Container */
-nav {
-    /* background-color: #ebe9ec; Dark background for contrast */
-    padding: 15px 20px;
-    display: flex;
-    justify-content: center; /* Center buttons */
-    gap: 20px; /* Space between buttons */
-    border-radius: 6px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Light shadow */
-    margin-bottom: 20px; /* Space below the navigation */
-}
-
-/* Button Styling */
-nav button {
-    background-color: #dde3dd; /* Green background for buttons */
-    color: rgb(17, 17, 17); /* White text */
-    font-size: 12px;
-    font-weight: bold;
-    padding: 5px 5px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
-}
-
-/* Button Hover Effect */
-nav button:hover {
-    background-color: #f2f0f5; /* Darker green when hovering */
-    color: #57115a; /* Keep text white */
-    transform: scale(1.05); /* Slightly enlarge on hover */
-}
-
-/* Active Button State */
-nav button.active {
-    /* background-color: #3B1E54; Active button will have a dark background */
-    color: #3a285d; /* Text turns green when active */
-    border: 2px solid #e6e9e6; /* Add green border */
-}
-
-/* Responsive styling for smaller screens */
-@media (max-width: 600px) {
-    nav {
-        flex-direction: column; /* Stack the buttons vertically on small screens */
-        align-items: center;
-    }
-
-    nav button {
-        width: 80%; /* Make buttons wider on small screens */
-        margin-bottom: 10px; /* Space between buttons */
-    }
-}
-
-
-
-main {
-    padding: 40px 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-}
-
-/* Form Container */
-.form-container {
-    background-color: rgb(221, 234, 215);
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
-    width: 100%;
-    max-width: 400px;
-    margin-bottom: 40px;
-    position: relative;
-    border: 2px solid #3B1E54;
-}
-
-.form-container h2 {
-    text-align: center;
+/* Inbox Button */
+.inbox-button-container button {
+    background-color: #ffffff;
     color: #3B1E54;
-    margin-bottom: 20px;
-}
-
-form label {
-    display: block;
-    margin-bottom: 8px;
+    padding: 8px 16px;
     font-size: 14px;
     font-weight: bold;
-}
-
-/* Input Fields with Icons */
-form .input-wrapper {
-    position: relative;
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-form input,
-form textarea {
-    width: 100%;
-    padding: 12px 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-form input:focus,
-form textarea:focus {
-    border-color: #0fb341;
-    box-shadow: 0 0 5px rgba(15, 179, 65, 0.5);
-    outline: none;
-}
-
-/* Left side icon */
-form .input-wrapper i:first-child {
-    position: absolute;
-    top: 50%;
-    left: 10px;
-    transform: translateY(-50%);
-    color: #82cd80;
-}
-
-/* Right side show/hide password icon */
-form .input-wrapper .fas.fa-eye,
-form .input-wrapper .fas.fa-eye-slash {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    cursor: pointer;
-}
-
-/* Space for the left icon */
-form .input-wrapper input,
-form .input-wrapper textarea {
-    padding-left: 35px;
-    padding-right: 35px;
-}
-
-/* Buttons */
-form button {
-    background-color: #3B1E54;
-    color: white;
-    padding: 10px;
     border: none;
-    cursor: pointer;
     border-radius: 6px;
-    font-size: 16px;
-    width: 102%;
+    cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
 }
 
-form button:hover {
-    background-color: #8dc996;
-    transform: scale(1.02); /* Slightly enlarges on hover */
-}
-
-/* Inbox Items */
-/* Inbox Items */
-#receivedMessagesForm {
-    background-color: rgb(221, 234, 215);
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    width: 100%;
-    max-width: 600px;
-    margin-bottom: 40px;
-    position: relative;
-    border: 2px solid #3B1E54;
-}
-
-#receivedMessagesForm h2 {
-    text-align: center;
-    color: #3B1E54;
-    margin-bottom: 20px;
-}
-
-#receivedMessagesList {
-    list-style-type: none;
-    padding: 0;
-}
-
-.inbox-item {
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    background-color: #fff;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.inbox-item:hover {
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transform: translateY(-3px); /* Slight hover effect */
+.inbox-button-container button:hover {
+    background-color: #f2f0f5;
+    transform: scale(1.05); /* Slight hover effect */
+    color: #57115a;
 }
 
 
-/* Footer */
 footer {
     background-color: #3B1E54;
     color: white;
     text-align: center;
-    padding: 2px 0;
+    padding: 10px 0;
     position: fixed;
     bottom: 0;
     width: 100%;
 }
 
-/* Responsive design for smaller screens */
+main {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 140px);
+}
+
+/* Container */
+.container {
+    background-color: rgb(221, 234, 215);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 500px;
+    border: 2px solid #3B1E54;
+}
+
+/* Feedback */
+.feedback {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* Server Info Banner */
+.server-info {
+    background-color: #f9f6d4;
+    color: #3B1E54;
+    border: 2px dashed #3B1E54;
+    border-radius: 6px;
+    padding: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Loading Indicator */
+.loading {
+    display: none;
+    text-align: center;
+    color: #3B1E54;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Form Elements */
+form label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #3B1E54;
+}
+
+form textarea {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 15px;
+    resize: none;
+    transition: border-color 0.3s;
+}
+
+form textarea:focus {
+    border-color: #42c01f;
+    outline: none;
+    box-shadow: 0 0 5px rgba(59, 30, 84, 0.4);
+}
+
+form button {
+    background-color: #3B1E54;
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    width: 102%;
+}
+
+form button:hover {
+    background-color: #8dc996;
+    transform: scale(1.02);
+}
+
+/* Navigation Buttons */
+/* .nav-buttons {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.nav-buttons button {
+    background-color: #3B1E54;
+    color: #dde3dd;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.nav-buttons button:hover {
+    background-color: #f2f0f5;
+    transform: scale(1.05);
+} */
+
+/* Responsive Design */
 @media (max-width: 600px) {
-    .form-container {
+    .container {
         max-width: 90%;
         padding: 20px;
     }
 
-    header {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    nav a {
-        margin-left: 10px;
+    textarea {
+        font-size: 12px;
     }
 }
