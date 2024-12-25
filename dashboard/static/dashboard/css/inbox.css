@@ -113,25 +113,8 @@ li p {
 }
 
 /* Footer Styles */
-footer {
-    background-color: #3B1E54;
-    color: white;
-    text-align: center;
-    padding: 10px 0;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}
 
-footer p {
-    margin: 0;
-    font-size: 14px;
-}
 
-footer a {
-    color: white;
-    text-decoration: none;
-}
 
 /* Modal Styles */
 .modal {
@@ -220,38 +203,75 @@ footer a {
     font-size: 18px;
     padding: 10px;
     line-height: 1.5;
+}/* Main Content Styles */
+ul {
+    list-style: none;
+    padding: 0;
+    max-width: 600px;
+    margin: 20px auto;
+    border: 1px solid #3B1E54;
+    border-radius: 8px;
+    background-color: #ffffff;
 }
 
-/* Fix for Message Content */
-ul li {
+/* Add padding-bottom to the main card container */
+#system1MessagesSection,
+#system2MessagesSection {
+    padding-bottom: 50px; /* Ensure there's enough space above the footer */
+}
+
+/* Each message card (li) */
+li {
+    padding: 15px 20px;
+    margin-bottom: 10px; /* Ensures consistent spacing between cards */
+    border-bottom: 1px solid #ECEBDE;
+    font-size: 16px;
+    cursor: pointer;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
+    justify-content: space-between;
+    background-color: #ffffff;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Fixing Card Padding and Margin for Message List */
-ul li p {
+li:last-child {
+    margin-bottom: 0; /* Removes extra margin for the last message */
+}
+
+li:hover {
+    background-color: #57115a;
+    color: #ECEBDE;
+    transform: scale(1.03); /* Slight zoom effect on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
+}
+
+li strong {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+li p {
     margin: 5px 0;
     font-size: 14px;
     color: #555;
+    line-height: 1.5;
 }
 
-ul li strong {
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.no-messages {
-    font-style: italic;
+/* Timestamp Styling */
+li .timestamp {
+    font-size: 12px;
     color: #888888;
+    margin-top: 8px;
+    align-self: flex-end; /* Align timestamp to the right */
 }
 
-/* Card hover effects */
-ul li:hover {
-    transform: scale(1.03);
-    background-color: #4c0e40;
-    transition: transform 0.3s ease-in-out;
+/* For better layout in modal */
+#messageContent {
+    font-size: 18px;
+    padding: 10px;
+    line-height: 1.5;
 }
 
 /* Modal Padding Fix */
@@ -261,7 +281,12 @@ ul li:hover {
 
 /* Footer Sticky Fix */
 footer {
-    position: sticky;
+    background-color: #3B1E54;
+    color: rgb(167, 227, 165);
+    text-align: center;
+    padding: 1px 0;
+    position: fixed;
     bottom: 0;
-    z-index: 10;
+    width: 100%;
+    margin-top: 10px;
 }

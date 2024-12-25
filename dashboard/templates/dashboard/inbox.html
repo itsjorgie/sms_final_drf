@@ -4,10 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inbox</title>
+    <title>{% block title %}MessagePro{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'dashboard/css/inbox.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="{% static 'dashboard/images/logo_website.png' %}" type="image/png">
 </head>
 <body>
     <!-- Header -->
@@ -22,12 +23,11 @@
         <i class="fas fa-arrow-right"></i> Back
     </button>
 
-    <!-- Main Content -->
-    <h2>Your Inbox</h2>
+          <h5>  </h5>
 
     <!-- Section for system1 messages -->
     <div id="system1MessagesSection" style="display: none;">
-        <h3>System 1 Inbox</h3>
+      
         <ul id="receivedMessagesListSystem1">
             <!-- System 1 Messages will be dynamically inserted here -->
         </ul>
@@ -35,7 +35,7 @@
 
     <!-- Section for system2 messages -->
     <div id="system2MessagesSection" style="display: none;">
-        <h3>System 2 Inbox</h3>
+        
         <ul id="receivedMessagesListSystem2">
             <!-- System 2 Messages will be dynamically inserted here -->
         </ul>
@@ -59,7 +59,7 @@
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2024 MessagePro | <a href="/privacy">All rights reserved.</a></p>
+        <p>&copy; 2024 MessagePro. All rights reserved.</p>
     </footer>
 
     <script>

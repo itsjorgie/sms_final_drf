@@ -10,8 +10,8 @@ from .views import CustomLoginView
 
 urlpatterns = [
     path('', dashboard_view, name='dashboard'),  # Dashboard view
+     path('login/', CustomLoginView.as_view(), name='login'),
     path('register/', RegisterView.as_view(), name='register'),  # Register view
-    path('login/', CustomLoginView.as_view(), name='login'),
     path('accounts/login/', custom_login, name='login'),
     path('send/', SendMessageView.as_view(), name='send-message'),
     path('received/', ReceiveMessageView.as_view(), name='view-received-messages'),  # View received messages

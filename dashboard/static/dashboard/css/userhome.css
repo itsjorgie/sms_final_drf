@@ -55,6 +55,26 @@ header {
     color: #57115a;
 }
 
+/* Inbox Button */
+.inbox-button-container1 button {
+    background-color: #ffffff;
+    color: #3B1E54;
+    margin-left: 1450px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.inbox-button-container1 button:hover {
+    background-color: #f2f0f5;
+    transform: scale(1.05); /* Slight hover effect */
+    color: #57115a;
+    border: 3px solid #84c285;
+}
 
 footer {
     background-color: #3B1E54;
@@ -228,4 +248,24 @@ form button:hover {
     .image-container, .form-container {
         max-width: 100%; /* Full width in stacked layout */
     }
+}
+/* Header Buttons */
+.header-buttons button {
+    background-color: #ffffff;
+    color: #3B1E54;
+    padding: 8px 10px; /* Increase padding for a larger button */
+    font-size: 12px; /* Increase font size */
+    font-weight: bold;
+    border: none;
+    border-radius: 8px; /* Slightly larger border-radius for rounded edges */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin: 0 5px; /* Add spacing between buttons */
+}
+
+.header-buttons button:hover {
+    background-color: #f2f0f5;
+    transform: scale(1.1); /* Slightly larger hover effect */
+    color: #57115a;
+    border: 3px solid #84c285; /* Add a hover border for emphasis */
 }
