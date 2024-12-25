@@ -8,10 +8,11 @@
     <style>
         /* Global Styles */
         body {
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
             background-color: #ECEBDE;
-            color: #3B1E54;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #3B1E54; /* Dark text color */
             position: relative;
         }
 
@@ -34,16 +35,20 @@
             top: 20px;
             right: 20px;
             padding: 10px 20px;
-            background-color: #3B1E54;
-            color: white;
-            border: none;
+            background-color: white;
+            color: #3B1E54;
+            border: 2px solid #3B1E54;
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            font-weight: bold; /* Text now bold */
+            transition: transform 0.3s ease, background-color 0.3s ease;
         }
 
+        /* Hover Effects */
         .back-button:hover {
-            background-color: #8dc996;
+            background-color: #fff;
+            transform: scale(1.1); /* Zoom-in effect */
         }
 
         /* Main Content Styles */
@@ -116,7 +121,6 @@
             color: white;
             text-decoration: none;
         }
-
     </style>
 </head>
 <body>
@@ -127,7 +131,6 @@
 
     <!-- Back Button -->
     <button class="back-button" onclick="window.location.href='{% url 'send_message' %}'">Back</button>
-
 
     <!-- Main Content -->
     <h2>Your Inbox</h2>
@@ -142,11 +145,6 @@
     </footer>
 
     <script>
-        // Go back to the send message page
-        function goBack() {
-            window.location.href = "/send_message"; // Change this URL to the path where your send message page is located
-        }
-
         // Show section
         function showSection(sectionId) {
             const sections = document.querySelectorAll("main > div");
@@ -193,7 +191,7 @@
             const receiveUrl = system === "system1"
                 ? "http://127.0.0.1:8001/api/system1/received/"
                 : "http://127.0.0.1:8002/api/system2/received/";
-        
+
             fetch(receiveUrl, {
                 method: "GET",
                 headers: {
@@ -241,46 +239,6 @@
             });
         }
         
-        // Send a message to the appropriate system
-        function sendMessage() {
-            const token = localStorage.getItem("access_token");
-            if (!token) {
-                alert("You need to log in first.");
-                window.location.href = "/inbox"; // Redirect to login page
-                return;
-            }
-        
-            const message = document.getElementById("messageInput").value;
-            const system = getCurrentSystem();
-            const sendUrl = system === "system1"
-                ? "http://127.0.0.1:8001/api/system1/send/"
-                : "http://127.0.0.1:8002/api/system2/send/";
-        
-            fetch(sendUrl, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
-                },
-                body: JSON.stringify({ message: message }),
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Failed to send message: ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Clear the message input and refresh the inbox
-                document.getElementById("messageInput").value = '';
-                fetchReceivedMessages(system);
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                alert("An error occurred while sending the message.");
-            });
-        }
-
         // Call showInbox when page loads to fetch messages
         showInbox();
     </script>
