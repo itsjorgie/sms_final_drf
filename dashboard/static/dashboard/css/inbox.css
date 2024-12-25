@@ -1,0 +1,267 @@
+/* Global Styles */
+body {
+    background-color: #ECEBDE;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #3B1E54; /* Dark text color */
+    position: relative;
+}
+
+/* Header Styles */
+header {
+    background-color: #3B1E54;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo and Title Section */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo-container img {
+    height: 50px;
+    width: auto;
+    margin-right: 10px;
+}
+
+/* Back Button Styles */
+.back-button {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    padding: 10px 5px;
+    background-color: white;
+    color: #3B1E54;
+    border: 2px solid #3B1E54;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+/* Hover Effects */
+.back-button:hover {
+    background-color: #fff;
+    transform: scale(1.1);
+}
+
+/* Main Content Styles */
+h2 {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    max-width: 600px;
+    margin: 20px auto;
+    border: 1px solid #3B1E54;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+li {
+    padding: 15px;
+    border-bottom: 1px solid #ECEBDE;
+    font-size: 16px;
+    cursor: pointer; /* Make messages clickable */
+}
+
+li:last-child {
+    border-bottom: none;
+}
+
+li:hover {
+    background-color: #57115a;
+    color: #ECEBDE;
+    transition: background-color 0.3s ease;
+}
+
+li strong {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+li p {
+    margin: 0;
+}
+
+/* No Messages Styling */
+.no-messages {
+    text-align: center;
+    font-size: 16px;
+    color: #888888;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #3B1E54;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+footer p {
+    margin: 0;
+    font-size: 14px;
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    overflow: auto;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+    position: relative; /* Add relative positioning to position the close button */
+}
+
+/* Modal Header (Message Details) Styling */
+.modal-header {
+    display: flex;
+    justify-content: center; /* Center the Message Details text */
+    align-items: center;
+    font-size: 18px; /* Adjust font size to fit better */
+    font-weight: bold; /* Make the font bold */
+    background-color: #57115a; 
+    color: white; /* White text */
+    padding: 8px 20px; /* Adjust padding to fit the text properly */
+    border-radius: 10px; /* Rounded corners */
+    width: fit-content; /* Make the width fit content */
+    margin: 0 auto; /* Center the header */
+}
+
+/* Close Button Styling (X button) */
+.close {
+    position: absolute;
+    top: 10px; /* Position at the top */
+    right: 10px; /* Position at the right */
+    color: #3B1E54;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Modal Body (Message Content) */
+.modal-body {
+    margin-top: 10px;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* Sent At Section */
+.sent-at {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.modal-footer {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.back-button {
+    background-color: #ffffff;
+    color: #3B1E54;
+    padding: 8px 16px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Message Styling */
+#messageContent {
+    font-size: 18px;
+    padding: 10px;
+    line-height: 1.5;
+}
+
+/* Fix for Message Content */
+ul li {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+/* Fixing Card Padding and Margin for Message List */
+ul li p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+ul li strong {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.no-messages {
+    font-style: italic;
+    color: #888888;
+}
+
+/* Card hover effects */
+ul li:hover {
+    transform: scale(1.03);
+    background-color: #4c0e40;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Modal Padding Fix */
+.modal-content {
+    padding: 25px;
+}
+
+/* Footer Sticky Fix */
+footer {
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+}
