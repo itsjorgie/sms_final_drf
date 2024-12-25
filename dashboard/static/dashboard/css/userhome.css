@@ -58,9 +58,9 @@ header {
 
 footer {
     background-color: #3B1E54;
-    color: white;
+    color: rgb(167, 227, 165);
     text-align: center;
-    padding: 10px 0;
+    padding: 2px 0;
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -91,19 +91,6 @@ main {
     margin-bottom: 15px;
 }
 
-/* Server Info Banner */
-.server-info {
-    background-color: #f9f6d4;
-    color: #3B1E54;
-    border: 2px dashed #3B1E54;
-    border-radius: 6px;
-    padding: 10px;
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 14px;
-    font-weight: bold;
-}
-
 /* Loading Indicator */
 .loading {
     display: none;
@@ -117,31 +104,31 @@ main {
 /* Form Elements */
 form label {
     display: block;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: bold;
     margin-bottom: 10px;
-    color: #3B1E54;
+    color: #f0e9f6;
 }
 
 form textarea {
     width: 100%;
-    padding: 5px;
+    padding: 4px;
     border: 1px solid #ccc;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 20px;
     margin-bottom: 15px;
     resize: none;
     transition: border-color 0.3s;
 }
 
 form textarea:focus {
-    border-color: #42c01f;
+    border-color: #a0d192;
     outline: none;
     box-shadow: 0 0 5px rgba(59, 30, 84, 0.4);
 }
 
 form button {
-    background-color: #3B1E54;
+    background-color: #84c285;
     color: white;
     padding: 12px 20px;
     font-size: 16px;
@@ -153,7 +140,7 @@ form button {
 }
 
 form button:hover {
-    background-color: #8dc996;
+    background-color: #357a49;
     transform: scale(1.02);
 }
 
@@ -189,5 +176,56 @@ form button:hover {
 
     textarea {
         font-size: 12px;
+    }
+}
+
+/* Ensure the main wrapper spans full width */
+.content-wrapper {
+    display: flex; /* Enable flexbox for horizontal layout */
+    flex-direction: row; /* Ensure children are aligned in a row */
+    width: 100%; /* Take up full width of the parent */
+    max-width: 1200px; /* Optional: Limit max width */
+    margin: 0 auto; /* Center the content */
+    gap: 20px; /* Space between image and form */
+    padding: 20px;
+    box-sizing: border-box; /* Include padding in width calculations */
+}
+
+/* Style for the image container */
+.image-container {
+    flex: 1; /* Take up 50% of the width */
+    display: flex;
+    justify-content: center; /* Center image horizontally */
+    align-items: center; /* Center image vertically */
+    max-width: 50%; /* Ensure it doesn't exceed half the width */
+}
+
+.image-container img {
+    max-width: 100%; /* Scale image within its container */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 10px; /* Optional: Add rounded corners */
+    
+}
+
+/* Style for the form container */
+.form-container_send-message {
+    flex: 1; /* Take up 50% of the width */
+    background-color:#370b62; /* Optional: Background color */
+    padding: 60px;
+    border-radius: 10px; /* Optional: Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Shadow */
+    max-width: 40%; /* Ensure it doesn't exceed half the width */
+    margin-left: 30px;
+    border: 3px solid #84c285;
+    height: 50%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .content-wrapper {
+        flex-direction: column; /* Stack items vertically */
+    }
+    .image-container, .form-container {
+        max-width: 100%; /* Full width in stacked layout */
     }
 }

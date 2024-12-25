@@ -1,14 +1,15 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Send Message</title>
     <link rel="stylesheet" href="{% static 'dashboard/css/userhome.css' %}">
-    <link rel="stylesheet" href="{% static 'dashboard/css/send_message.css' %}">
     <script src="{% static 'dashboard/js/send_message.js' %}"></script>
 </head>
+
 <body>
     <header>
         <div class="header-container">
@@ -22,24 +23,34 @@
         </div>
     </header>
     <main>
-        <div class="container">
-            <!-- Notification about Server 2 -->
-            <div class="server-info">
-                <p>📡 Messages from this form will be routed to <strong>Server 2</strong>. Please ensure all content complies with our guidelines.</p>
+        <div class="content-wrapper">
+            <!-- Left Column: Image -->
+            <div class="image-container">
+                <img src="{% static 'dashboard/images/send.svg' %}" alt="Message Illustration">
             </div>
 
-            
-            <div id="feedback" class="feedback"></div>
-            <div id="loading" class="loading">Sending to Server 2...</div>
+            <!-- Right Column: Form Container -->
+            <div class="form-container_send-message">
+                <!-- Notification about Server 2 -->
+                <div class="server-info">
+                    <img src="{% static 'dashboard/images/mp_logo.png' %}" alt="Logo">
+                </div>
 
-            <form id="sendMessageFormElement" method="POST" action="{% url 'send_message' %}">
-                {% csrf_token %}
-                <label for="message">Message</label>
-                <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required></textarea>
-                <button type="submit">Send</button>
-            </form>
+                <div id="feedback" class="feedback"></div>
+                <div id="loading" class="loading">Sending to Server 2...</div>
+
+                <form id="sendMessageFormElement" method="POST" action="{% url 'send_message' %}">
+                    {% csrf_token %}
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" placeholder="Write your message here..."
+                        required></textarea>
+                    <button type="submit">Send</button>
+                </form>
+            </div>
         </div>
     </main>
+
+
     <footer>
         <p>&copy; 2024 MessagePro. All rights reserved.</p>
     </footer>
@@ -48,31 +59,31 @@
         function getCurrentSystem() {
             const hostname = window.location.hostname; // Get the current hostname
             const port = window.location.port; // Get the current port
-    
+
             if (port === "8001") {
                 return "system1"; // If the current port is 8001, it's system1
             } else if (port === "8002") {
                 return "system2"; // If the current port is 8002, it's system2
             }
-    
+
             // Fallback if no matching system is found
             console.error("Unable to determine the system. Defaulting to system1.");
             return "system1"; // Default to system1
         }
-    
+
         // Send message
         function sendMessage(event) {
             event.preventDefault(); // Prevent form submission
-    
+
             // Get the form data
             const formData = new FormData(document.getElementById("sendMessageFormElement"));
             const data = {
                 message: formData.get("message"), // Get the message content from the form
             };
-    
+
             // Get the CSRF token from the form
             const csrfToken = formData.get("csrfmiddlewaretoken");
-    
+
             // Get the authentication token from localStorage
             const token = localStorage.getItem("access_token");
             if (!token) {
@@ -80,16 +91,16 @@
                 window.location.href = "/login"; // Redirect to the login page
                 return;
             }
-    
+
             // Determine the system to decide which URL to use
             const system = getCurrentSystem();
             const sendUrl = system === "system1"
                 ? "http://127.0.0.1:8001/api/system1/send/"
                 : "http://127.0.0.1:8002/api/system2/send/";
-    
+
             // Debugging: Verify system and URL
             console.log(`System: ${system}, URL: ${sendUrl}`);
-    
+
             // Send the data to the backend using Fetch API
             fetch(sendUrl, {
                 method: "POST",
@@ -120,10 +131,11 @@
                     alert("An error occurred while sending the message.");
                 });
         }
-    
+
         // Add event listener to form submit
         document.getElementById("sendMessageFormElement").addEventListener("submit", sendMessage);
     </script>
-    
+
 </body>
+
 </html>
