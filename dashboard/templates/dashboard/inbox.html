@@ -1,11 +1,68 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inbox</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #ECEBDE;
+            color: #3B1E54;
+        }
+
+        h2 {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            max-width: 600px;
+            margin: 20px auto;
+            border: 1px solid #3B1E54;
+            border-radius: 8px;
+            background-color: #ffffff;
+        }
+
+        li {
+            padding: 15px;
+            border-bottom: 1px solid #ECEBDE;
+            font-size: 16px;
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        li:hover {
+            background-color: #8dc996;
+            color: #ECEBDE;
+            transition: background-color 0.3s ease;
+        }
+
+        li strong {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        li p {
+            margin: 0;
+        }
+
+        .no-messages {
+            text-align: center;
+            font-size: 16px;
+            color: #888888;
+        }
+    </style>
 </head>
 <body>
     <h2>Your Inbox</h2>
@@ -35,8 +92,7 @@
                 return "system2";
             }
         
-            // Default system if URL is not detected (could be improved)
-            return null;
+            return null; // Default system if URL is not detected
         }
         
         // Show inbox and fetch messages based on the current system
