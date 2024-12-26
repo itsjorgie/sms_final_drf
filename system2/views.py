@@ -69,6 +69,7 @@ class ReceiveMessageView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
+        """Handles saving an encrypted message."""
         encrypted_message = request.data.get("message")
 
         if not encrypted_message:
@@ -81,7 +82,7 @@ class ReceiveMessageView(APIView):
                 message=encrypted_message  # Save as encrypted
             )
 
-            # Optionally decrypt for verification or debugging
+            # Optionally decrypt for debugging or verification
             decrypted_message = decrypt_message(encrypted_message)
 
             return Response({
@@ -91,27 +92,38 @@ class ReceiveMessageView(APIView):
             }, status=status.HTTP_201_CREATED)
         except Exception as e:
             print(f"Error saving or decrypting message: {e}")
-            return Response({"error": "Failed to save or decrypt message"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"error": f"Failed to save or decrypt message: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def get(self, request):
-        # Fetch all received messages
-        received_messages = ReceivedMessage.objects.all().order_by('-timestamp')
-        decrypted_messages = []
+        """Fetch all received messages for all users."""
+        try:
+            # Fetch all received messages, ordered by timestamp
+            received_messages = ReceivedMessage.objects.all().order_by('-timestamp')
+            decrypted_messages = []
 
-        # Decrypt each message for display
-        for msg in received_messages:
-            try:
-                decrypted_messages.append({
-                    "id": msg.id,
-                    "user": msg.user.username,
-                    "message": decrypt_message(msg.message),  # Decrypt for display
-                    "timestamp": msg.timestamp
-                })
-            except Exception as e:
-                print(f"Error decrypting message ID {msg.id}: {e}")
-                continue
+            for msg in received_messages:
+                try:
+                    # Decrypt each message for display (no encrypted message in response)
+                    decrypted_message = decrypt_message(msg.message)
+                    decrypted_messages.append({
+                        "id": msg.id,
+                        "user": msg.user.username,
+                        "decrypted_message": decrypted_message,  # Only return decrypted message
+                        "timestamp": msg.timestamp
+                    })
+                except Exception as e:
+                    print(f"Error decrypting message ID {msg.id}: {e}")
+                    decrypted_messages.append({
+                        "id": msg.id,
+                        "user": msg.user.username,
+                        "decrypted_message": None,  # Indicate decryption failure
+                        "timestamp": msg.timestamp
+                    })
 
-        return Response(decrypted_messages, status=status.HTTP_200_OK)
+            return Response(decrypted_messages, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(f"Error fetching received messages: {e}")
+            return Response({"error": f"Failed to fetch received messages: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # View sent messages
 class ViewSentMessagesView(APIView):

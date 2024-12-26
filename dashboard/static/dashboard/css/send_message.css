@@ -1,0 +1,190 @@
+body {
+    background-color: #ECEBDE;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #3B1E54;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+header img {
+    height: 50px;
+    width: auto;
+}
+nav {
+    display: flex;
+}
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+nav a:hover {
+    background-color: #8dc996;
+}
+
+main {
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+/* Form Container */
+.form-container {
+    background-color: rgb(221, 234, 215);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 40px;
+    position: relative;
+    border: 2px solid #3B1E54; /* Adjust color and thickness */
+}
+
+.form-container h2 {
+    text-align: center;
+    color: #3B1E54;
+    margin-bottom: 20px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Input Fields with Icons */
+form .input-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+form input {
+    width: 100%;
+    padding: 8px 12px;
+    margin-bottom: 0;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    width: 325px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+    outline: 2px solid #508f66; /* Add a solid blue outline */
+}
+
+form input:focus {
+    border-color: #0fb341;
+    outline: none;
+}
+
+/* Left side icon */
+form .input-wrapper i:first-child {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #82cd80;
+}
+
+/* Right side show/hide password icon */
+form .input-wrapper .fas.fa-eye,
+form .input-wrapper .fas.fa-eye-slash {
+    position: absolute;
+    top: 50%;
+    right: 10px; /* Position icon on the right side */
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+/* Space for the left icon */
+form .input-wrapper input {
+    padding-left: 35px; /* Space for the left icon */
+    padding-right: 35px; /* Space for the right icon */
+}
+
+/* Buttons */
+form button {
+    background-color: #3B1E54;
+    color: white;
+    padding: 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 16px;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+form button:hover {
+    background-color: #8dc996;
+}
+
+/* Footer */
+ footer {
+        background-color: #3B1E54;
+        color: rgb(167, 227, 165);
+        text-align: center;
+        padding: 2px 0;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+  }
+
+p {
+    text-align: center;
+    font-size: 14px;
+}
+
+p a {
+    color: #3B1E54;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+p a:hover {
+    color: #8dc996;
+}
+
+/* Show/Hide form sections */
+#loginForm, #registerForm {
+    display: none;
+}
+#registerForm.active, #loginForm.active {
+    display: block;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 600px) {
+    .form-container {
+        max-width: 90%;
+        padding: 20px;
+    }
+
+    header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    nav {
+        margin-top: 10px;
+    }
+
+    nav a {
+        margin-left: 10px;
+    }
+}
