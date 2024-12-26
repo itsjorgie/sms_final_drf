@@ -5,18 +5,22 @@ Django REST Framework (DRF) Secure Message Applications
 🔐 User Authentication
 Secure login and registration for both applications.
 Role-based access control (if needed).
+
 ✉️ Message Transmission
 Real-time messaging between the two systems.
 Messages are encrypted before transmission and decrypted upon receipt to ensure confidentiality.
 Dynamic Communication: Messages are transmitted and processed seamlessly without delay.
+
 🛡️ Security Features
 Default (Django) Middleware and Cryptography for:
 Encrypting outgoing data.
 Decrypting incoming messages.
 Hashing sensitive information and validating requests.
+
 📊 Dashboard
 A user-friendly dashboard to:
 Monitor sent and received messages.
+
 🧑‍💻 Real-time Updates
 Instant reflection of messages on the receiving server, ensuring a smooth user experience.
 
