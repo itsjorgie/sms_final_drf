@@ -1,5 +1,8 @@
 Django REST Framework (DRF) Secure Message Applications
-🌟Welcome to our MessagePro project! FAST. SECURE. RELIABLE.🚀 This is a secure, real-time, two-server messaging system built using Django REST Framework (DRF) and MySQL (via Laragon). It enables encrypted communication between two servers: System 1 (running on port 8001) and System 2 (running on port 8002). The project focuses on ensuring secure, dynamic, and real-time communication through custom middleware for encryption and decryption.
+
+🌟Welcome to our MessagePro project! FAST. SECURE. RELIABLE.🚀 This is a secure, real-time, two-server messaging system built using Django REST Framework (DRF) and MySQL (via Laragon).
+It enables encrypted communication between two servers: System 1 (running on port 8001) and System 2 (running on port 8002). 
+The project focuses on ensuring secure, dynamic, and real-time communication through custom middleware for encryption and decryption.
 
 🛠️ Features
 🔐 User Authentication
